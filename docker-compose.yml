@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Path to your Dockerfile for FastAPI application
+    ports:
+      - "8000:8000"  # Map container port 8000 to host port 8000
+    depends_on:
+      - database
+    environment:
+      - DATABASE_URL=postgresql://postgres:Password@database/test  # Adjust based on your PostgreSQL credentials
+
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Password
+    ports:
+      - "5432:5432"  # Map container port 5432 to host port 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
